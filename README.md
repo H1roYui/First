@@ -1,45 +1,18 @@
-# Raspberry Pi 電腦視覺初體驗 (First Assignment)
+# LBPH Face Recognition with OpenCV & Haar Cascade
 
-這是我第一次作業的儲存庫，主要使用 Raspberry Pi 搭配 `picamera2` 與 `OpenCV` 來進行各種電腦視覺的基礎應用。
+基於 OpenCV 的 Haar 特徵人臉偵測與 LBPH（Local Binary Patterns Histograms）特徵分析之即時人臉辨識系統。
 
-## 專案結構與檔案說明
+## 📌 專案架構 (Project Structure)
 
-* **`photo.py`**
-  使用 `picamera2` 拍攝一張照片，將其轉換為灰階影像後，儲存為 `gray_capture_0922.jpg`。
-* **`video.py`**
-  使用 `picamera2` 錄製 10 秒鐘的影片。影片的左上角會即時顯示 FPS，右上角會顯示當下的日期與時間，最後存成 MP4 檔案。
-* **`face.py`**
-  讀取一張圖片 (`photo.jpg`)，利用 OpenCV 內建的 Haar 特徵分類器 (`haarcascade_frontalface_alt.xml`) 來進行人臉偵測，並在偵測到的人臉周圍畫上綠色方框。
-* **`lanedetect.py`**
-  結合攝影機即時畫面進行「車道線偵測」。步驟包含：擷取 ROI (感興趣區域)、過濾白線、Canny 邊緣偵測以及 Hough 直線轉換，最後將標記出的車道線與原畫面疊加並錄製成影片。
-
-## 執行環境與套件需求
-
-本專案主要運行於 Raspberry Pi 環境，並需要以下套件：
-- Python 3.x
-- `opencv-python` (cv2)
-- `picamera2`
-- `numpy`
-
-可以透過以下指令安裝（若在 Raspberry Pi OS 上，`picamera2` 通常已內建）：
-```bash
-pip install -r requirements.txt
-```
-
-## 執行方式範例
-
-執行各個程式前，請確保攝影機已正確連接並啟用。
-
-```bash
-# 拍攝灰階照片
-python photo.py
-
-# 錄製帶有時間與 FPS 的影片
-python video.py
-
-# 執行人臉偵測 (需準備一張 photo.jpg 在同目錄下)
-python face.py
-
-# 執行車道線偵測即時錄影
-python lanedetect.py
-```
+```text
+LBPH_Face/
+├── collect_faces.py            # 1. 影像收集：透過 Webcam 即時偵測並裁切人臉樣本
+├── train_lbph.py               # 2. 模型訓練：讀取人臉集並生成 LBPH 模型與標籤對應檔
+├── recognize_lbph.py           # 3. 即時辨識：結合 Webcam 進行 LBPH 特徵比對與標示
+├── haarcascade_frontalface_alt.xml  # Haar Cascade 人臉偵測分類器模型檔
+├── data/                       # 人臉圖像資料庫
+│   ├── student01/              # 學生/人員 01 的灰階人臉照片
+│   └── student02/              # 學生/人員 02 的灰階人臉照片
+└── models/                     # 訓練結果儲存目錄
+    ├── lbph_model.yml          # LBPH 權重與特徵模型檔
+    └── labels.json             # 類別標籤與對應姓名檔
