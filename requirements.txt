@@ -1,3 +1,0 @@
-opencv-python>=4.5.0
-numpy>=1.19.0
-# picamera2 是 Raspberry Pi OS 專屬套件，通常內建，若需指定可加上
